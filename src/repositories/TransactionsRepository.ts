@@ -23,7 +23,7 @@ class TransactionsRepository extends Repository<Transaction> {
       .map(transaction => transaction.value)
       .reduce((acc, value) => acc + value, 0);
 
-    const total = income - outcome;
+    const total = parseFloat((income - outcome).toFixed(2));
 
     return {
       income,
