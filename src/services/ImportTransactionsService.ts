@@ -22,11 +22,20 @@ class ImportTransactionsService {
 
     const createTransaction = new CreateTransactionService();
 
-    const starterPromise = Promise.resolve(null);
+    const starterPromise = Promise.resolve([]);
 
     const transactions = await records.reduce(
-      (promise: Promise<Transaction | null>, record: TransactionDTO) =>
-        promise.then(() => createTransaction.execute(record)),
+      async (
+        previousPromise: Promise<Transaction[]>,
+        record: TransactionDTO,
+      ) => {
+        const collection = await previousPromise;
+        const transaction = await createTransaction.execute(record);
+
+        collection.push(transaction);
+
+        return collection;
+      },
       starterPromise,
     );
 

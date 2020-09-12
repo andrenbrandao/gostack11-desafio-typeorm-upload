@@ -54,9 +54,9 @@ transactionsRouter.post(
     const { path } = request.file;
 
     const importTransaction = new ImportTransactionsService();
-    await importTransaction.execute(path);
+    const transactions = await importTransaction.execute(path);
 
-    return response.status(201).send();
+    return response.json(transactions);
   },
 );
 
